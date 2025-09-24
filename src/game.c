@@ -18,8 +18,9 @@ void game(void) {
     int desired_bet, bet_amount;
 
     while (player_money > 0) {
-        fpritnf(stdout, "Input Bet Amount\n");
-        fscanf("%d", &desired_bet);
+        printf("Input desired bet: ");
+        scanf("%d", &desired_bet);
         bet_amount = setBetAmount(player_money, desired_bet);
+        printf("Bet Amount: %s%d\n", JOLLAR_SIGN, bet_amount);
     }
 }
