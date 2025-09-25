@@ -7,68 +7,93 @@
 #define START_AMOUNT 500
 #define JOLLAR_SIGN "Ɉ"
 
-int setBetAmount(int player_money, int desired_bet) {
-    if (desired_bet > player_money) {
-        desired_bet = player_money;
-    } else if (desired_bet <= 0) {
-        desired_bet = 1;
+/*
+ * Show current jollar amount FINISEHD
+ * get how much you want to bet FINISHED
+ * * use while loop for bounds of 0 to amount of jollars
+ * place guess of heads or tails BUGGY
+ * * while input isn't h or t
+ * flip coin of heads or tails once FINISHED
+ * check placed guess vs coin
+ * if loss lose bet
+ * if win floor((bet / money) + 1)
+ * Eventually figure out a way to do file bets
+ */
+
+int placeBetAmount(int player_money) {
+    int desired_bet = 0;
+
+    while ((desired_bet > player_money) || (desired_bet <= 0)) {
+        printf("Input desired bet amount: ");
+        scanf("%d", &desired_bet);
     }
 
     return desired_bet;
 }
 
+int placeGuess(void) {
+    char guess = '\0';
+
+    do {
+        printf("[h]eads or [t]ails: ");
+        scanf("%c", &guess);
+    } while (tolower(guess) != 'h' || tolower(guess) != 't');
+
+    switch (tolower(guess)) {
+        case 'h':
+            printf("Your Guess: Heads\n");
+            return 1;
+            break;
+        case 't':
+            printf("Your Guess: Tails\n");
+            return 0;
+            break;
+    }
+}
+
 int flipCoin(void) {
     int result;
+
     srand(time(NULL));
+    
     result = rand() % 2;
-    return result;
+
+    switch (result) {
+        case 0:
+            printf("Coin: Tails\n");
+            return 0;
+            break;
+        case 1:
+            printf("Coin: Heads\n");
+            return 1;
+            break;
+    }
 }
 
-int placeGuess(void) {
-    char guess;
-    int format_guess;
-    int attempts = 0;
-
-    printf("[h]eads or [t]ails\n");
-    while (((tolower(guess) != 'h') || (tolower(guess) != 't')) && attempts < 3) {
-        guess = fgetc(stdin);
-        attempts++;
-    }
-
-    if (guess == 'h') {
-        format_guess = 1;
-        printf("You guess: Heads\n");
+int checkRound(int money, int bet, int guess, int coin) {
+    if (guess == coin) {
+        money = floor(( money * (bet / money) + 1));
+        printf("Congrats: You've won\n");
     } else {
-        format_guess = 0;
-        printf("You guess: Tails\n");
+        printf("Sorry: You've lost\n");
+        money = money - bet;
     }
 
-    return format_guess;
+    return money;
 }
 
-int main() {
-    int player_money = START_AMOUNT;
-    int desired_bet, bet_amount, coin_flip, guess;
+int main(void) {
+    int money = START_AMOUNT;
+    int bet_amount, guess, coin;
 
-    while (player_money > 0) {
-        printf("Jollars: %s%d\n", JOLLAR_SIGN, START_AMOUNT);
-        printf("Input desired bet: ");
-        scanf("%d", &desired_bet);
-
-        bet_amount = setBetAmount(player_money, desired_bet);
-
-        printf("Bet Amount: %s%d\n", JOLLAR_SIGN, bet_amount);
-
+    printf("WELCOME TO THE JASINO\n");
+    while (money > 0) {
+        printf("%s%d\n", JOLLAR_SIGN, money);
+        
+        bet_amount = placeBetAmount(money);
         guess = placeGuess();
-        coin_flip = flipCoin();
-   
-        if (coin_flip != guess) {
-            printf("LOSS\n");
-            player_money -= bet_amount;
-        } else {
-            printf("WIN\n");
-            player_money += floor(player_money * ((bet_amount / player_money) + 1));
-        }
+        coin = flipCoin();
+        money = checkRound(money, bet_amount, guess, coin);
     }
 
     return 0;
