@@ -11,12 +11,12 @@
  * Show current jollar amount FINISEHD
  * get how much you want to bet FINISHED
  * * use while loop for bounds of 0 to amount of jollars
- * place guess of heads or tails BUGGY
+ * place guess of heads or tails FINISHED
  * * while input isn't h or t
  * flip coin of heads or tails once FINISHED
- * check placed guess vs coin
- * if loss lose bet
- * if win floor((bet / money) + 1)
+ * check placed guess vs coin FINISHED
+ * if loss lose bet FINISHED
+ * if win floor((bet / money) + 1) BUGGY
  * Eventually figure out a way to do file bets
  */
 
@@ -32,22 +32,24 @@ int placeBetAmount(int player_money) {
 }
 
 int placeGuess(void) {
-    char guess = '\0';
+    int guess;
 
-    do {
+    while (guess = fgetc(stdin)) {
         printf("[h]eads or [t]ails: ");
         scanf("%c", &guess);
-    } while (tolower(guess) != 'h' || tolower(guess) != 't');
 
-    switch (tolower(guess)) {
-        case 'h':
-            printf("Your Guess: Heads\n");
-            return 1;
-            break;
-        case 't':
-            printf("Your Guess: Tails\n");
-            return 0;
-            break;
+        switch (tolower(guess)) {
+            case 'h':
+                printf("Your Guess: Heads\n");
+                return 1;
+                break;
+            case 't':
+                printf("Your Guess: Tails\n");
+                return 0;
+                break;
+            default:
+                continue;
+        }
     }
 }
 
