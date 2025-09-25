@@ -8,14 +8,6 @@
 #define JOLLAR_SIGN "Ɉ"
 
 /*
- * Show current jollar amount FINISEHD
- * get how much you want to bet FINISHED
- * * use while loop for bounds of 0 to amount of jollars
- * place guess of heads or tails FINISHED
- * * while input isn't h or t
- * flip coin of heads or tails once FINISHED
- * check placed guess vs coin FINISHED
- * if loss lose bet FINISHED
  * if win floor((bet / money) + 1) BUGGY
  * Eventually figure out a way to do file bets
  */
@@ -75,29 +67,33 @@ int flipCoin(void) {
 
 int checkRound(int money, int bet, int guess, int coin) {
     if (guess == coin) {
-        money *= 1 + bet / money;
-        printf("Congrats: You've won\n");
+        printf("Congrats: You've won\n\n");
+        money = money + bet;
     } else {
-        printf("Sorry: You've lost\n");
-        money -= bet;
+        printf("Sorry: You've lost\n\n");
+        money = money - bet;
     }
-
+    
     return money;
 }
 
 int main(void) {
+    int hand = 1;
     int money = START_AMOUNT;
     int bet_amount, guess, coin;
 
     printf("WELCOME TO THE JASINO\n");
     while (money > 0) {
-        printf("%s%d\n", JOLLAR_SIGN, money);
+        printf("Hand %d: %s%d\n", hand, JOLLAR_SIGN, money);
         
         bet_amount = placeBetAmount(money);
         guess = placeGuess();
         coin = flipCoin();
         money = checkRound(money, bet_amount, guess, coin);
+        hand++;
     }
+
+    printf("You've lost all your money, better luck next time!\n");
 
     return 0;
 }
