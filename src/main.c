@@ -48,6 +48,7 @@ int placeGuess(void) {
                 return 0;
                 break;
             default:
+                fflush(stdin);
                 continue;
         }
     }
@@ -74,11 +75,11 @@ int flipCoin(void) {
 
 int checkRound(int money, int bet, int guess, int coin) {
     if (guess == coin) {
-        money = floor(( money * (bet / money) + 1));
+        money *= 1 + bet / money;
         printf("Congrats: You've won\n");
     } else {
         printf("Sorry: You've lost\n");
-        money = money - bet;
+        money -= bet;
     }
 
     return money;
