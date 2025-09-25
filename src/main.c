@@ -8,16 +8,23 @@
 #define JOLLAR_SIGN "Ɉ"
 
 /*
- * if win floor((bet / money) + 1) BUGGY
  * Eventually figure out a way to do file bets
  */
 
 int placeBetAmount(int player_money) {
     int desired_bet = 0;
+    int attempts;
 
-    while ((desired_bet > player_money) || (desired_bet <= 0)) {
+    while ((desired_bet > player_money) || (desired_bet <= 0) && attempts < 3) {
         printf("Input desired bet amount: ");
         scanf("%d", &desired_bet);
+        attempts++;
+    }
+
+    if (attempts >= 2) {
+        printf("You couldn't put how much to bet between 1 and how much you have,"
+                " you aren't smart enough to gamble and I'm protecting you.\n");
+        exit(0);
     }
 
     return desired_bet;
@@ -25,8 +32,9 @@ int placeBetAmount(int player_money) {
 
 int placeGuess(void) {
     int guess;
+    int attempts = 0;
 
-    while (guess = fgetc(stdin)) {
+    while (guess = fgetc(stdin) && attempts < 3) {
         printf("[h]eads or [t]ails: ");
         scanf("%c", &guess);
 
@@ -41,9 +49,14 @@ int placeGuess(void) {
                 break;
             default:
                 fflush(stdin);
+                attempts++;
                 continue;
         }
     }
+
+    printf("You couldn't put heads or tails in 3 attempts. You aren't smart "
+            "enough to gamble and I'm protecting you.\n");
+    exit(0);
 }
 
 int flipCoin(void) {
@@ -68,13 +81,11 @@ int flipCoin(void) {
 int checkRound(int money, int bet, int guess, int coin) {
     if (guess == coin) {
         printf("Congrats: You've won\n\n");
-        money = money + bet;
-    } else {
-        printf("Sorry: You've lost\n\n");
-        money = money - bet;
+        return money + bet;
     }
-    
-    return money;
+
+    printf("Sorry: You've lost\n\n");
+    return money - bet;
 }
 
 int main(void) {
