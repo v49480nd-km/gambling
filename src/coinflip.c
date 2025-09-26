@@ -4,8 +4,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define START_AMOUNT 500
-#define JOLLAR_SIGN "Ɉ"
+#include "coinflip.h"
 
 /*
  * Figure out a way to save jollar amount and read from that
@@ -25,8 +24,10 @@ int placeBetAmount(int player_money) {
     }
 
     if (attempts >= 2) {
-        printf("You couldn't put how much to bet between 1 and how much you have,"
-                " you aren't smart enough to gamble and I'm protecting you.\n");
+        printf(
+            "You couldn't put how much to bet between 1 and how much you have,"
+            " you aren't smart enough to gamble and I'm protecting you.\n"
+        );
         exit(0);
     }
 
@@ -57,8 +58,10 @@ int placeGuess(void) {
         }
     }
 
-    printf("You couldn't put heads or tails in 3 attempts. You aren't smart "
-            "enough to gamble and I'm protecting you.\n");
+    printf(
+        "You couldn't put heads or tails in 3 attempts. You aren't smart "
+        "enough to gamble and I'm protecting you.\n"
+    );
     exit(0);
 }
 
@@ -91,12 +94,12 @@ int checkRound(int money, int bet, int guess, int coin) {
     return money - bet;
 }
 
-int main(void) {
+int cfgame(void) {
     int hand = 1;
     int money = START_AMOUNT;
     int bet_amount, guess, coin;
 
-    printf("WELCOME TO THE JASINO\n");
+    printf("JASINO PRESENTS: COIN FLIP\n");
     while (money > 0) {
         printf("Hand %d: %s%d\n", hand, JOLLAR_SIGN, money);
         
@@ -108,6 +111,5 @@ int main(void) {
     }
 
     printf("You've lost all your money, better luck next time!\n");
-
-    return 0;
+    exit(0);
 }

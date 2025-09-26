@@ -1,5 +1,5 @@
 #!/bin/bash
 
 cd ../src
-gcc coinflip.c -o jasino
+gcc main.c coinflip.c -o jasino
 mv jasino ../
