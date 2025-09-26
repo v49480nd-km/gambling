@@ -1,1 +1,5 @@
 src/main
+build/jasino
+jasino
+src/*.o
+build/*.o

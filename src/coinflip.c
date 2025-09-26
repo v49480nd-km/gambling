@@ -8,7 +8,10 @@
 #define JOLLAR_SIGN "Ɉ"
 
 /*
- * Eventually figure out a way to do file bets
+ * Figure out a way to save jollar amount and read from that
+ * * If certain file doesn't exist
+ * * make file and write starting amount
+ * * if file exists read money amount
  */
 
 int placeBetAmount(int player_money) {
