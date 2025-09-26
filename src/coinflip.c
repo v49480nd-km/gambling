@@ -111,5 +111,4 @@ int cfgame(void) {
     }
 
     printf("You've lost all your money, better luck next time!\n");
-    exit(0);
 }

@@ -10,17 +10,21 @@ int main(void) {
     printf("AVAILABLE GAMES\n");
     printf(
         "[1] Coin Flip\n"
+        "> "
     );
 
     while (game_selected = fgetc(stdin) && attempts < 3) {
         switch (game_selected) {
             case 1:
+                fflush(stdin);
                 cfgame();
                 break;
             case 2:
+                fflush(stdin);
                 printf("Under construction\n");
                 break;
             default:
+                fflush(stdin);
                 printf("Not an option\n");
                 attempts++;
                 continue;
