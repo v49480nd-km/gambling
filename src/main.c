@@ -3,8 +3,8 @@
 #include "coinflip.h"
 
 int main(void) {
-    int game_selected;
     int attempts = 0;
+    int game_select;
 
     printf("WELCOME TO THE JASINO\n");
     printf("AVAILABLE GAMES\n");
@@ -13,18 +13,16 @@ int main(void) {
         "> "
     );
 
-    while (game_selected = fgetc(stdin) && attempts < 3) {
-        switch (game_selected) {
+    while (game_select = fgetc(stdin) != '\n') {
+        switch (game_select) {
             case 1:
-                fflush(stdin);
-                cfgame();
+                coinFlipGame();
+                printf("Thanks for playing Coinflip!\n");
                 break;
             case 2:
-                fflush(stdin);
                 printf("Under construction\n");
                 break;
             default:
-                fflush(stdin);
                 printf("Not an option\n");
                 attempts++;
                 continue;

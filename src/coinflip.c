@@ -6,109 +6,87 @@
 
 #include "coinflip.h"
 
-/*
- * Figure out a way to save jollar amount and read from that
- * * If certain file doesn't exist
- * * make file and write starting amount
- * * if file exists read money amount
- */
+int _placeBetAmount(int money) {
+    int attempts = 0;
+    int desired_bet;
 
-int placeBetAmount(int player_money) {
-    int desired_bet = 0;
-    int attempts;
+    printf("Input desired bet amount: %s", JOLLAR_SIGN);
 
-    while ((desired_bet > player_money) || (desired_bet <= 0) && attempts < 3) {
-        printf("Input desired bet amount: ");
-        scanf("%d", &desired_bet);
+    while (scanf("%d", &desired_bet) && attempts < 3) {
+        if (desired_bet > money && desired_bet <= 0) {
+            return desired_bet;
+        }
+        
         attempts++;
+        continue;
     }
 
-    if (attempts >= 2) {
-        printf(
-            "You couldn't put how much to bet between 1 and how much you have,"
-            " you aren't smart enough to gamble and I'm protecting you.\n"
-        );
-        exit(0);
-    }
-
-    return desired_bet;
+    printf("Failed to input bet amount. Maybe you shouln't gamble\n");
+    exit(0);
 }
 
-int placeGuess(void) {
-    int guess;
+int _placeGuess(void) {
     int attempts = 0;
+    int guess;
 
-    while (guess = fgetc(stdin) && attempts < 3) {
-        printf("[h]eads or [t]ails: ");
-        scanf("%c", &guess);
-
+    while (scanf("%c", &guess) && attempts < 3) {
         switch (tolower(guess)) {
             case 'h':
-                printf("Your Guess: Heads\n");
                 return 1;
                 break;
             case 't':
-                printf("Your Guess: Tails\n");
                 return 0;
                 break;
             default:
-                fflush(stdin);
                 attempts++;
                 continue;
         }
     }
 
-    printf(
-        "You couldn't put heads or tails in 3 attempts. You aren't smart "
-        "enough to gamble and I'm protecting you.\n"
-    );
+    printf("Failed to input guess. Maybe you shouldn't gamble\n");
     exit(0);
 }
 
-int flipCoin(void) {
-    int result;
-
+int _flipCoin(void) {
     srand(time(NULL));
-    
-    result = rand() % 2;
 
-    switch (result) {
-        case 0:
-            printf("Coin: Tails\n");
-            return 0;
-            break;
-        case 1:
-            printf("Coin: Heads\n");
-            return 1;
-            break;
-    }
+    return rand() % 2;
 }
 
-int checkRound(int money, int bet, int guess, int coin) {
+int _checkRound(int bet, int coin, int guess, int money) {
     if (guess == coin) {
-        printf("Congrats: You've won\n\n");
+        printf("You won\n\n");
         return money + bet;
     }
 
-    printf("Sorry: You've lost\n\n");
+    printf("You lost\n\n");
     return money - bet;
 }
 
-int cfgame(void) {
-    int hand = 1;
-    int money = START_AMOUNT;
-    int bet_amount, guess, coin;
+void coinFlipGame(void) {
+    char continue_game;
+    int bet, coin, guess, hand = 1, money = START_AMOUNT;
 
     printf("JASINO PRESENTS: COIN FLIP\n");
+   
     while (money > 0) {
-        printf("Hand %d: %s%d\n", hand, JOLLAR_SIGN, money);
+        printf("Do you wish to continue [y/n]: ");
         
-        bet_amount = placeBetAmount(money);
-        guess = placeGuess();
-        coin = flipCoin();
-        money = checkRound(money, bet_amount, guess, coin);
-        hand++;
-    }
+        while (continue_game = fgetc(stdin) != '\n') {
+            continue;
+        }
 
-    printf("You've lost all your money, better luck next time!\n");
+        if (tolower(continue_game) == 'n') {
+            break;
+        }
+
+        printf("Hand %d\n", hand);
+        printf("Money: %s%d\n", JOLLAR_SIGN, money);
+
+        continue_game = '\0';
+        bet = _placeBetAmount(money);
+        guess = _placeGuess();
+        coin = _flipCoin();
+        money = _checkRound(bet, coin, guess, money);
+    }
 }
