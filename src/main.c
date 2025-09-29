@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "coinflip.h"
 
@@ -7,17 +8,22 @@ int main(void) {
     int game_select;
 
     printf("WELCOME TO THE JASINO\n");
+game_select:
     printf("AVAILABLE GAMES\n");
     printf(
         "[1] Coin Flip\n"
+        "[0] Exit\n"
         "> "
     );
 
-    while (game_select = fgetc(stdin) != '\n') {
+    while (scanf("%d", &game_select)) {
         switch (game_select) {
+            case 0:
+                printf("Thanks for playing at the Jasino\n");
+                exit(0);
             case 1:
                 coinFlipGame();
-                printf("Thanks for playing Coinflip!\n");
+                goto game_select;
                 break;
             case 2:
                 printf("Under construction\n");
